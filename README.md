@@ -25,7 +25,7 @@ Djangoではひとつのプロジェクトは複数のアプリケーション�
 ネット上のすべてのページにはURL（Uniform Resource Locator）が設定される。このURLを使って、アプリケーションは何を表示すべきか特定することができる。Djangoでは、URLconf機能を使って、リクエストされたURLとの照合をはかり、正しいviewファイルを特定することができる。
 
 - view  
-Webサーバーにリクエストが送られると、Djangoが実際何をリクエストされたか特定しようとする。始めにURLを特定し、次に何をすべきか判明させるのである。この機能はDjangoの**urlリゾルバ**によって実現される。Djangoは上記URLconf機能によって、URLリストの一番上から下まで確認し照合作業を開始する。URLが照合すると、Djangoはリクエストをその関連する関数に渡す作業をviewと呼ぶ。
+Webサーバーにリクエストが送られると、Djangoが実際何をリクエストされたか特定しようとする。始めにURLを特定し、次に何をすべきか判明させるのである。この機能はDjangoの**urlリゾルバ**によって実現される。Djangoは上記URLconf機能によって、URLリストの一番上から下まで確認し照合作業を開始する。URLが照合すると、Djangoはリクエストをその関連する関数に渡す作業をviewと呼ぶ。  
  - (e.g.)郵便配達を例にすると、配達員が通りを歩いて一つ一つの家の住所を確認して、手紙の住所と照合作業するのと同じである。照合したら手紙をポストに投函するだろう。
   
 - template
@@ -42,6 +42,7 @@ Cascading Style Sheets (CSS) はウェブサイトの見た目やフォーマッ
 ## [Djangoの利用に際して](https://tutorial.djangogirls.org/en/installation/)
 Djangoに限らず、プロジェクトを作成する際は、プロジェクト毎に仮想環境を準備するのがグッドプラクティス。  
 Pythonでの仮想環境の構築手順は以下の通り。
+
 1. まず、プロジェクトフォルダを作成する。
 ```
 $ mkdir djangogirls
@@ -136,6 +137,7 @@ class Post(models.Model):  #models.Model means that the Post is a Django Model, 
 ```
 
 models.pyにモデルの変更を記述したら、以下のコマンドを叩いてDjangoに変更を知らせる。
+
 ```
 $ python manage.py makemigrations blog
 ```
