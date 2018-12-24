@@ -44,31 +44,37 @@ Djangoに限らず、プロジェクトを作成する際は、プロジェク�
 Pythonでの仮想環境の構築手順は以下の通り。
 
 1. まず、プロジェクトフォルダを作成する。
+
 ```
 $ mkdir djangogirls
 $ cd djangogirls
 ```
 
 1. 次に仮想環境を起動する。
+
 ```
 $python3 -m venv [myvenv]  #venvは仮想環境用のライブラリ。実行すると[myvenv]フォルダとその直下に設定ファイルが生成される。
 $source [myvenv]/bin/activate  #仮想環境を起動する。
 ```
 
 1. 必要なライブラリをインストールし、環境構築する。  
+
 ```
 (myvenv) ~$ pip install -U pip
 (myvenv) ~$ touch requirements.txt  #pipでインストールするライブラリを記述する。記述例：Django~=2.0.6
 (myvenv) ~$ pip install -r requirements.txt  #requirements.txtのライブラリを順にインストールする。
 ```
+
 gitやtmuxなど汎用ツールは予めシステムに入れてから仮想環境を作った方がよい？グッドプラクティスは分からん。
 
 1. Webに公開（＝デプロイ）するため、[Pythonanywhere](https://www.pythonanywhere.com/user/b1200315/)や[Heroku](https://www.heroku.com)などにも登録しておこう。
 1. Djangoのプロジェクトを作成する。[参考URL](https://tutorial.djangogirls.org/en/django_start_project/)  
 下記コマンドを実行すると、カレントディレクトリにDjangoスクリプトがたくさんできる。
+
 ```
 (myvenv) $ django-admin startproject [mysite] .
 ```
+
  - ./manage.py: a script that helps with management of the site. With it we will be able to start a web server on our computer without installing anything else.
  - ./mysite/settings.py: it contains the configuration of your website.
  - ./mysite/urls.py: it contains a list of patterns used by urlresolver. It's expected to be changed as follows.
@@ -79,15 +85,18 @@ gitやtmuxなど汎用ツールは予めシステムに入れてから仮想環�
     - ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
     - DATABASES = {'default': {~~~}}  #デフォルトではsqlite3が使われる。他のDBを使いたい場合は書換える。
 
-1. ルートディレクトリとDBを設定する。  
+1. ルートディレクトリとDBを設定する。 
+
 ```
 (myvenv) ~$ python manage.py migrate
 ```
 
 1. サーバーを起動する。
+
 ```
 (myvenv) ~/$ python manage.py runserver
 ```
+
 起動したら、ブラウザに[http://127.0.0.1:8000/](http://127.0.0.1:8000/)をリクエストするとアクセスできる。
 
 ---
