@@ -18,23 +18,25 @@
 ---
 
 ## [フレームワークの基礎](https://tutorial.djangogirls.org/en/django/)
-- アプリケーションとモデル
-Djangoではひとつのプロジェクトは複数のアプリケーションで構成される。以下のコマンドでアプリケーションを作成する。
+- アプリケーションとモデル  
+Djangoではひとつのプロジェクトは複数のアプリケーションで構成される。  
+プロジェクトには対応するDBが存在し、各アプリケーションのモデルがDBのオブジェクトとして登録されていく。
 
 - URLconf  
-ネット上のすべてのページにはURL（Uniform Resource Locator）が設定される。このURLを使って、アプリケーションは何を表示すべきか特定することができる。Djangoでは、URLconf機能を使って、リクエストされたURLとの照合をはかり、正しいviewファイルを特定することができる。
+urls.pyにて規定。ネット上のすべてのページにはURL（Uniform Resource Locator）が設定される。このURLを使って、アプリケーションは何を表示すべきか特定することができる。Djangoでは、URLconf機能を使って、リクエストされたURLとの照合をはかり、正しいviewファイルを特定することができる。
 
 - view  
-Webサーバーにリクエストが送られると、Djangoが実際何をリクエストされたか特定しようとする。始めにURLを特定し、次に何をすべきか判明させるのである。この機能はDjangoの**urlリゾルバ**によって実現される。Djangoは上記URLconf機能によって、URLリストの一番上から下まで確認し照合作業を開始する。URLが照合すると、Djangoはリクエストをその関連する関数に渡す作業をviewと呼ぶ。  
- - (e.g.)郵便配達を例にすると、配達員が通りを歩いて一つ一つの家の住所を確認して、手紙の住所と照合作業するのと同じである。照合したら手紙をポストに投函するだろう。
+views.pyにて規定。モデルとテンプレートをつなぐ機能。  
+  - urlリゾルバ: Webサーバーにリクエストが送られると、Djangoが実際何をリクエストされたか特定しようとする。始めにURLを特定し、次に何をすべきか判明させるのである。Djangoは上記URLconf機能によって、URLリストの一番上から下まで確認し照合作業を開始する。URLが照合すると、Djangoではリクエストをその関連する関数に渡してテンプレートを呼び出す作業をviewと呼ぶ。  
+  - (e.g.)郵便配達を例にすると、配達員が通りを歩いて一つ一つの家の住所を確認して、手紙の住所と照合作業するのと同じである。照合したら手紙をポストに投函するだろう。
   
-- template
-テンプレートファイルは特定のフォーマットに従った情報を再利用するための機能である。（例えば、メールを書くときを想像してみよう。宛先や内容は毎回異なるとしても、署名やフォーマットは毎回同じである。）
+- template  
+テンプレート（htmlファイル）は表示するページの内容。また、基本的にページは使い回されるため、特定のフォーマットを記述して再利用する役割もある。（例えば、メールを書くときを想像してみよう。宛先や内容は毎回異なるとしても、署名やフォーマットは毎回同じである。）
 
-- CSS
-Cascading Style Sheets (CSS) はウェブサイトの見た目やフォーマットを記述する言語である。
+- CSS  
+Cascading Style Sheets (CSS) はウェブサイトの見た目やフォーマットを記述する言語である。テンプレートの見た目を設定する。
 
-- Forms
+- Forms  
 フォームを使うことで、インターフェイスにボタンをつけたり様々なことができる。Djangoでは、スクラッチでフォームを規定することもできるし、フォームの内容をモデルに登録することでModelFormsと呼ばれるオブジェクトを作ることもできる。
 
 ---
@@ -267,6 +269,10 @@ HTMLで.htmlファイルに記述すれば、それが表示されるように�
 {% endfor %}
 ```
 
+また、ここで以下の単語を覚えておこう。（CSSの際に使用する。）  
+- element: htmlのタグ。上のコードの例では、h2やaがelementに相当する。  
+CSSでは、element毎にスタイル（フォントなど）を定義できる。
+
 ---
 
 ## [QuerySet](https://tutorial.djangogirls.org/en/django_orm/)
@@ -313,15 +319,17 @@ Static files are all your CSS and images. Django will automatically find any fol
 
 CSSファイルはstaticディレクトリの下のcssディレクトリ下に作る。（例：**blog/static/css/blog.css**）  
 CSSファイルを書くときは、[HTML Color Name](https://www.w3schools.com/colors/colors_names.asp)などを参照しながら、フォントを設定していく。  
-- class: HTMLの複数のelementをグルーピングする。class="external_link"など。
+なお、CSSが適用される単位はhtmlファイルのタグ単位（elementと呼ばれる）である。  
+スタイルを適用する際に単位をグルーピングしておくと何かと便利なので、elementを纏める単位が用意されている。  
+- class: HTMLの複数のelementをグルーピングする。class="external_link"など。リンク先を青字＆下線的なスタイルで統一する、など。
 - id: HTMLにおける特定のelementを指し示す。id="link_to_wiki_page"など。  
 
-CSSファイルの細かい書き方は「CSSのリンク」を参考にするとよい。
+CSSファイルの細かい書き方は[CSS](https://tutorial.djangogirls.org/en/css/)を参考にすると良い。
 
 - We also need to tell our HTML template that we added some CSS. Open the **blog/templates/blog/post_list.html** file in the code editor and add this line at the very beginning of it:`{% load static %}`
 
 We're just loading static files here. 
-Between the <head> and </head> tags, after the links to the Bootstrap CSS files, add this line:
+Between the `<head>` and `</head>` tags, after the links to the Bootstrap CSS files, add this line:
 
 `<link rel="stylesheet" href="{% static 'css/blog.css' %}">`
 
