@@ -10,9 +10,13 @@
     </head>
     <body>
         <div class="page-header">
+            <a href="admin/" class="top-menu">
+                <button type="button" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-user"></span> Login 
+                </button>
+            </a>
             {% if user.is_authenticated %}
                 <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-}
             {% endif %}
             <h1><a href="/">Ikki's Blog</a></h1>
         </div>
