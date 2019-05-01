@@ -308,9 +308,8 @@ A QuerySet is, in essence, a list of objects of a given Model. QuerySets allow y
 Cascading Style Sheets (CSS) はウェブサイトの見た目やフォーマットを記述する言語である。
 CSSのフォーマットは[Bootstrap](https://getbootstrap.com)がよく参照されるとのこと。
 
-Bootstrapをインストールするには、テンプレートの**blog/templates/blog/post_list.html**の先頭に以下の2行を追記する。
+Bootstrapをインストールするには、**htmlファイル**の`<head>`タグのところに以下のような行を追記する。最終形は、下部要参照。
 ```
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 ```
 
@@ -347,10 +346,19 @@ Your template file should now look like this:
     </head>
 ```
 - つまり、全体に適用させたいフォントは.cssファイルに、個別に適用させたいフォントはテンプレートの.htmlファイルに記述する要領でよい。
+- フォントをネット上からダウンロードして表示される際は、[英語の場合](https://fonts.google.com)と[日本語の場合](https://googlefonts.github.io/japanese/)からhtmlファイルとcssファイルの書き方を参考に記述できる。  
+htmlファイルの書き方（ダウンロードの仕方）例（以下を`<head>`タグ内に入れよう）
+```
+<link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
+```
+cssファイルの書き方例
+```
+font-family: "Sawarabi Gothic";
+```
 - .htmlファイルなどの`<div>`タグにクラス名を与えて識別しやすくすることも可能。例：`<div class="page-header"></div>`
 
 ## [Template extending](https://tutorial.djangogirls.org/en/template_extending/)
-Webページ内で汎用的にテンプレートを使いまわしたいとき、`base.html`ファイルを用意すればよい。（例：blog/templates/blog/base.html）
+Webページ内でcssファイルやテンプレートを汎用的に使いまわしたいとき、`base.html`ファイルを用意すればよい。（例：blog/templates/blog/base.html）
 
 1. base.html内でHTMLを別途定義したい際は、以下の記述を記載する。
 ```
