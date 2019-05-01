@@ -13,10 +13,12 @@ def post_detail(request, pk):
     return render(request, 'blog/post_detail.html', {'post': post})
 
 def post_new(request):
+    # if句で最初に訪れた時と、form.postにデータがある時で
+    # 挙動が変わるようにしている。
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)    
+            post = form.save(commit=False) # commit=Falseで、まだDBにトランザクションをコミットしない。
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
