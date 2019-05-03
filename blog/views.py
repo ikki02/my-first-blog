@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import Post
-from .forms import PostForm
+from .models import Post, Image
+from .forms import PostForm, ImageForm
 
 # Create your views here.
 def paginate_query(request, queryset, count):
@@ -53,3 +53,15 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+
+
+def image_new(request):
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('post_list')
+    else:
+        form = ImageForm()
+        obj = Image.objects.all()
+    return render(request, 'blog/image_new.html', {'form': form, 'obj':obj})

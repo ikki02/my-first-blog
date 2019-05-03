@@ -16,7 +16,8 @@
                 </button>
             </a>
             {% if user.is_authenticated %}
-                <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+                <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-pencil"></span></a>
+                <a href="{% url 'image_new' %}" class="top-menu"><span class="glyphicon glyphicon-picture"></span></a>
             {% endif %}
             <h1><a href="/">Ikki's Blog</a></h1>
         </div>
