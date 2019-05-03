@@ -63,5 +63,5 @@ def image_new(request):
             return redirect('post_list')
     else:
         form = ImageForm()
-        #obj = Image.objects.all()
-    return render(request, 'blog/image_new.html', {'form': form})
+        obj = Image.objects.all()
+    return render(request, 'blog/image_new.html', {'form': form, 'obj':obj})

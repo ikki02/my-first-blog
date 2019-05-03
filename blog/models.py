@@ -19,8 +19,8 @@ class Post(models.Model):  #Django knows that it should be saved in DB.
 
 class Image(models.Model):
     photo = models.ImageField(upload_to='images/', verbose_name='添付画像')
-    #description = models.CharField(max_length=255, blank=True)
-    #uploaded_at = models.DateTimeField(auto_now_add=True)
+    description = models.CharField(max_length=255, blank=True, verbose_name='説明')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.photo)  #一応URLがでる。
+        return self.photo.url  #一応URLがでる。
