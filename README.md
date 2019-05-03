@@ -85,8 +85,8 @@ gitやtmuxなど汎用ツールは予めシステムに入れてから仮想環�
 ```
 
  - ./manage.py: a script that helps with management of the site. With it we will be able to start a web server on our computer without installing anything else.
- - ./mysite/settings.py: it contains the configuration of your website.
- - ./mysite/urls.py: it contains a list of patterns used by urlresolver. It's expected to be changed as follows.
+ - ./mysite/urls.py: it contains a list of patterns used by urlresolver.
+ - ./mysite/settings.py: it contains the configuration of your website. It's expected to be changed as follows.
     - LANGUAGE_CODE = 'ja'
     - TIME_ZONE = 'Asia/Tokyo'
     - STATIC_URL = '/static/'  #static fileの設定1
