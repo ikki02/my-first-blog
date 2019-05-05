@@ -25,6 +25,7 @@ def post_detail(request, pk):
     import re
     import MeCab
     from collections import Counter
+    #import matplotlib.pyplot as plt
 
     post = get_object_or_404(Post, pk=pk)
     post_text = re.sub('\r|\r\n|\n', '', post.text)
@@ -38,6 +39,26 @@ def post_detail(request, pk):
     for element in elements:
         morpheme_list.append(element[2])  # 原形を抽出。表層形はelement[0]。品詞はelement[3]
     cnt_morpheme = Counter(morpheme_list)
+
+    '''
+    # グラフ描画
+    output_path = 'media/graph/post_{}.png'.format(pk)
+    size = 30
+
+    morphemes_for_graph = cnt_morpheme.most_common(size)
+    list_zipped = list(zip(*morphemes_for_graph))
+    morphems = list_zipped[0]
+    counts = list_zipped[1]
+    plt.bar(range(0, size), counts, align='center')
+    plt.xticks(range(0, size), morphems)
+    plt.xlim(xmin=-1, xmax=size)
+    plt.title('出現頻度上位30語')
+    plt.xlabel('出現頻度が高い30語')
+    plt.ylabel('出現頻度')
+    plt.grid(axis='y')
+    plt.savefig(output_path, dpi=300, bbox_inches='tight')
+    '''
+
     return render(request, 'blog/post_detail.html', {'post': post, 'morpheme': cnt_morpheme})
 
 def post_new(request):
@@ -69,6 +90,51 @@ def post_edit(request, pk):
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
 
+
+# グラフ作成
+def setPlt(pk):
+    post = get_object_or_404(Post, pk=pk)
+    post_text = re.sub('\r|\r\n|\n', '', post.text)
+
+    # 使われている語彙の頻度分布作成
+    morpheme_list = []
+    m = MeCab.Tagger('-Ochasen')
+    parsed_elements = m.parse(post_text)
+    elements = [elements.split() for elements in parsed_elements.splitlines()]
+    del elements[-1] # 文末のEOSを削除する。
+    for element in elements:
+        morpheme_list.append(element[2])  # 原形を抽出。表層形はelement[0]。品詞はelement[3]
+    cnt_morpheme = Counter(morpheme_list)
+
+    # グラフ描画
+    size = 30
+
+    morphemes_for_graph = cnt_morpheme.most_common(size)
+    list_zipped = list(zip(*morphemes_for_graph))
+    morphems = list_zipped[0]
+    counts = list_zipped[1]
+    plt.bar(range(0, size), counts, align='center')
+    plt.xticks(range(0, size), morphems)
+    plt.xlim(xmin=-1, xmax=size)
+    plt.title('出現頻度上位30語')
+    plt.xlabel('出現頻度が高い30語')
+    plt.ylabel('出現頻度')
+    plt.grid(axis='y')
+
+# svgへの変換
+def pltToSvg():
+    buf = io.BytesIO()
+    plt.savefig(buf, format='svg', bbox_inches='tight')
+    s = buf.getvalue()
+    buf.close()
+    return s
+
+def get_svg(request,  pk):
+    setPlt(pk)       # create the plot
+    svg = pltToSvg() # convert plot to SVG
+    plt.cla()        # clean up plt so it can be re-used
+    response = HttpResponse(svg, content_type='image/svg+xml')
+    return response
 
 def image_new(request):
     if request.method == 'POST':

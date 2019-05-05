@@ -2,3 +2,4 @@ Django~=2.0.6
 pillow
 django-cleanup
 mecab-python3
+matplotlib
