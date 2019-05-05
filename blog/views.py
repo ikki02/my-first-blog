@@ -17,13 +17,28 @@ def paginate_query(request, queryset, count):
     return page_obj
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date').reverse()
     page_obj = paginate_query(request, posts, 3)
     return render(request, 'blog/post_list.html', {'page_obj':page_obj})
 
 def post_detail(request, pk):
+    import re
+    import MeCab
+    from collections import Counter
+
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
+    post_text = re.sub('\r|\r\n|\n', '', post.text)
+
+    # 使われている語彙の頻度分布作成
+    morpheme_list = []
+    m = MeCab.Tagger('-Ochasen')
+    parsed_elements = m.parse(post_text)
+    elements = [elements.split() for elements in parsed_elements.splitlines()]
+    del elements[-1] # 文末のEOSを削除する。
+    for element in elements:
+        morpheme_list.append(element[2])  # 原形を抽出。表層形はelement[0]。品詞はelement[3]
+    cnt_morpheme = Counter(morpheme_list)
+    return render(request, 'blog/post_detail.html', {'post': post, 'morpheme': cnt_morpheme})
 
 def post_new(request):
     # if句で最初に訪れた時と、form.postにデータがある時で

@@ -13,5 +13,10 @@
         {% endif %}
         <h2>{{ post.title }}</h2>
         <p>{{ post.text|linebreaksbr }}</p>
+        {% if user.is_authenticated %}
+            <p><br></p>
+            <h5>↓【管理ユーザー向け】形態素解析の結果</h5>
+            <p>{{ morpheme }}</p>
+        {% endif %}
     </div>
 {% endblock %}
