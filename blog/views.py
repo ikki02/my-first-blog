@@ -9,6 +9,7 @@ import re
 import MeCab
 from collections import Counter
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
 # Create your views here.
 def paginate_query(request, queryset, count):
@@ -29,19 +30,7 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post_text = re.sub('\r|\r\n|\n', '', post.text)
-
-    # 使われている語彙の頻度分布作成
-    morpheme_list = []
-    m = MeCab.Tagger('-Ochasen')
-    parsed_elements = m.parse(post_text)
-    elements = [elements.split() for elements in parsed_elements.splitlines()]
-    del elements[-1] # 文末のEOSを削除する。
-    for element in elements:
-        morpheme_list.append(element[2])  # 原形を抽出。表層形はelement[0]。品詞はelement[3]
-    cnt_morpheme = Counter(morpheme_list)
-
-    return render(request, 'blog/post_detail.html', {'post': post, 'morpheme': cnt_morpheme})
+    return render(request, 'blog/post_detail.html', {'post': post})
 
 def post_new(request):
     # if句で最初に訪れた時と、form.postにデータがある時で
@@ -89,19 +78,22 @@ def setPlt(pk):
     cnt_morpheme = Counter(morpheme_list)
 
     # グラフ描画
+    # フォントは/usr/local/share/fonts/source-han-code-jp-2.000R/OTF/SourceHanCodeJP-Regular.otfを使用
+    # matplotlibrcに追記済み
     size = 30
 
     morphemes_for_graph = cnt_morpheme.most_common(size)
     list_zipped = list(zip(*morphemes_for_graph))
     morphemes = list_zipped[0]
     counts = list_zipped[1]
-    plt.bar(range(0, len(morphemes)), counts, align='center')
-    plt.xticks(range(0, len(morphemes)), morphemes)
+    plt.bar(range(0, len(morphemes)), counts, align='center', zorder=3)
+    plt.xticks(range(0, len(morphemes)), morphemes, rotation=270)
     plt.xlim(xmin=-1, xmax=size)
+    plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
     plt.title('出現頻度上位30語')
     plt.xlabel('出現頻度が高い30語')
     plt.ylabel('出現頻度')
-    plt.grid(axis='y')
+    plt.grid(axis='y', zorder=0)
 
 # svgへの変換
 def pltToSvg():

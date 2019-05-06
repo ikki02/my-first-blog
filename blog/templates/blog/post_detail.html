@@ -16,9 +16,7 @@
         {% if user.is_authenticated %}
             <p><br></p>
             <h5>↓【管理ユーザー向け】形態素解析の結果</h5>
-            <p>{{ morpheme }}</p>
             <img src='{% url 'plot' post.pk %}' width=600 height=600>
-            <!-- <img src="media/graph/post_pk=post.pk.png" width="100" height="100"/> --> 
         {% endif %}
     </div>
 {% endblock %}
