@@ -13,9 +13,16 @@
         {% endif %}
         <h2>{{ post.title }}</h2>
         <p>{{ post.text|linebreaksbr }}</p>
+        <p><br></p>
+        <h5>【管理ユーザー向け】形態素解析の結果</h5>
+        <p>↓(結果を確認するにはログインしてください。)</p5>
         {% if user.is_authenticated %}
-            <p><br></p>
-            <h5>↓【管理ユーザー向け】形態素解析の結果</h5>
+            <p>文字量: {{ char }}</p>
+            <p>タイプ（一意な語彙の数）: {{ type }}</p>
+            <p>トークン（語彙の出現頻度合計）: {{ token }}</p>
+            <p>TTR: {{ ttr }}</p>
+            <p>CTTR: {{ cttr }}</p>
+            <p>ユールのk値: {{ yulek }}</p>
             <img src='{% url 'plot' post.pk %}' width=600 height=600>
         {% endif %}
     </div>
