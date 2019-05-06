@@ -1,8 +1,14 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Post, Image
 from .forms import PostForm, ImageForm
+import io
+import re
+import MeCab
+from collections import Counter
+import matplotlib.pyplot as plt
 
 # Create your views here.
 def paginate_query(request, queryset, count):
@@ -22,11 +28,6 @@ def post_list(request):
     return render(request, 'blog/post_list.html', {'page_obj':page_obj})
 
 def post_detail(request, pk):
-    import re
-    import MeCab
-    from collections import Counter
-    #import matplotlib.pyplot as plt
-
     post = get_object_or_404(Post, pk=pk)
     post_text = re.sub('\r|\r\n|\n', '', post.text)
 
@@ -39,25 +40,6 @@ def post_detail(request, pk):
     for element in elements:
         morpheme_list.append(element[2])  # 原形を抽出。表層形はelement[0]。品詞はelement[3]
     cnt_morpheme = Counter(morpheme_list)
-
-    '''
-    # グラフ描画
-    output_path = 'media/graph/post_{}.png'.format(pk)
-    size = 30
-
-    morphemes_for_graph = cnt_morpheme.most_common(size)
-    list_zipped = list(zip(*morphemes_for_graph))
-    morphems = list_zipped[0]
-    counts = list_zipped[1]
-    plt.bar(range(0, size), counts, align='center')
-    plt.xticks(range(0, size), morphems)
-    plt.xlim(xmin=-1, xmax=size)
-    plt.title('出現頻度上位30語')
-    plt.xlabel('出現頻度が高い30語')
-    plt.ylabel('出現頻度')
-    plt.grid(axis='y')
-    plt.savefig(output_path, dpi=300, bbox_inches='tight')
-    '''
 
     return render(request, 'blog/post_detail.html', {'post': post, 'morpheme': cnt_morpheme})
 
@@ -111,10 +93,10 @@ def setPlt(pk):
 
     morphemes_for_graph = cnt_morpheme.most_common(size)
     list_zipped = list(zip(*morphemes_for_graph))
-    morphems = list_zipped[0]
+    morphemes = list_zipped[0]
     counts = list_zipped[1]
-    plt.bar(range(0, size), counts, align='center')
-    plt.xticks(range(0, size), morphems)
+    plt.bar(range(0, len(morphemes)), counts, align='center')
+    plt.xticks(range(0, len(morphemes)), morphemes)
     plt.xlim(xmin=-1, xmax=size)
     plt.title('出現頻度上位30語')
     plt.xlabel('出現頻度が高い30語')
