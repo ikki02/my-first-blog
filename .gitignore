@@ -6,4 +6,4 @@ db.sqlite3
 /static
 README_local.md
 .DS_Store
-/fastapi/mlapi/data
+/fastapi/ml_api/data

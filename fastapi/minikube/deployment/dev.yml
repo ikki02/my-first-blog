@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapi
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  labels:
+    app: fast-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fast-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: fast-api
+    spec:
+      containers:
+      - image: myapi:v1
+        imagePullPolicy: IfNotPresent
+        name: api
+        ports:
+        - containerPort: 80
+          protocol: TCP
+      restartPolicy: Always
