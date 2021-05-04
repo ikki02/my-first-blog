@@ -1,9 +1,9 @@
 *.pyc
 *~
 __pycache__
-myvenv
 db.sqlite3
 /media/images/
 /static
 README_local.md
 .DS_Store
+/fastapi/mlapi/data
