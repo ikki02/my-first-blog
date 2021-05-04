@@ -29,7 +29,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with pytest
       run: |
-        echo $(BASE_DIR)
+        echo $BASE_DIR
       env:
         BASE_DIR: /home/runner/work/my-first-blog/my-first-blog
     - name: Lint with flake8
